@@ -42,7 +42,7 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Archivo Black', sans-serif;
             line-height: 1.1;
             text-transform: uppercase;
@@ -168,13 +168,13 @@
 
         /* === ABOUT & SKILLS === */
         .section {
-            padding: 120px 10vw;
+            padding: 100px 10vw;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         .section-title {
             font-size: 2.5rem;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             color: var(--c-white);
             display: flex;
             align-items: center;
@@ -228,14 +228,95 @@
             color: var(--text-muted);
         }
 
-        /* === PORTFOLIO === */
+        /* === PORTFOLIO (SELECTED WORK) === */
+        .work-category {
+            margin-bottom: 80px;
+        }
+
+        .work-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-title::before {
+            content: "";
+            width: 20px;
+            height: 2px;
+            background: var(--accent);
+        }
+
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            gap: 30px;
         }
 
-        /* Folder Style Card */
+        /* Standard Project Card */
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .project-img {
+            height: 250px;
+            width: 100%;
+            position: relative;
+            background: #0f1422;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 25px;
+            flex: 1;
+        }
+
+        .project-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            color: var(--c-white);
+            margin-bottom: 10px;
+            text-transform: none;
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Folder Style Card (For Techweek) */
         .folder-card {
             position: relative;
             background: var(--card-bg);
@@ -246,7 +327,7 @@
             text-align: left;
             width: 100%;
             padding: 40px 25px 25px;
-            margin-top: 15px; /* Space for the folder tab */
+            margin-top: 15px; 
         }
 
         .folder-card::before {
@@ -285,44 +366,12 @@
             color: var(--text-muted);
         }
 
-        /* Standard Project Card */
-        .project-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: left;
-            width: 100%;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-        }
-
-        .project-img {
-            height: 250px;
-            width: 100%;
-            position: relative;
-        }
-
-        .project-info {
-            padding: 25px;
-        }
-
-        .project-info h3 {
+        /* Blank Placeholder styling */
+        .placeholder-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.5;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            color: var(--c-white);
-            margin-bottom: 10px;
-            text-transform: none;
-        }
-
-        .project-info p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
         }
 
         /* === CONTACT === */
@@ -359,7 +408,7 @@
             color: var(--c-navy);
         }
 
-        /* === MODALS (POP UPS) === */
+        /* === MODALS === */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -414,11 +463,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background 0.3s;
         }
 
         .modal-close:hover {
-            background: rgba(255,0,0,0.5);
+            background: rgba(255,0,0,0.6);
         }
 
         .modal-body {
@@ -435,7 +483,7 @@
             margin-bottom: 20px;
         }
 
-        /* === FOLDER GRID (INSIDE MODAL) === */
+        /* Folder Grid (Inside Modal) */
         .folder-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -459,14 +507,9 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: transform 0.3s;
         }
 
-        .folder-item:hover img {
-            transform: scale(1.05);
-        }
-
-        /* === FULLSCREEN IMAGE VIEWER === */
+        /* Image Viewer */
         .image-viewer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -486,7 +529,6 @@
             max-height: 90vh;
             object-fit: contain;
             border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
         .image-viewer-close {
             position: absolute;
@@ -499,11 +541,8 @@
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
         }
-        .image-viewer-close:hover {
-            background: rgba(255,0,0,0.6);
-        }
 
-        /* === MOOD BOARD PALETTE MOCKUP === */
+        /* Mood Board Palette Mockup */
         .mood-palette { display: flex; height: 100px; border-radius: 10px; overflow: hidden; margin-bottom: 30px; }
         .mood-color { flex: 1; }
 
@@ -584,42 +623,113 @@
     <!-- PORTFOLIO SECTION -->
     <section class="section" id="portfolio">
         <h2 class="section-title reveal">Selected Work</h2>
-        <div class="portfolio-grid">
-            
-            <!-- Project 1: Tech Week Folder -->
-            <button class="folder-card reveal" onclick="openModal('modal-techweek')">
-                <div class="folder-icon">📁</div>
-                <h3>Print Media Proposal</h3>
-                <p>4 Assets · TECH WEEK 2026</p>
-            </button>
 
-            <!-- Project 2: Mood Board -->
-            <button class="project-card reveal" onclick="openModal('modal-moodboard')">
-                <div class="project-img" style="display: flex;">
-                    <div style="flex: 1; background: #453939;"></div>
-                    <div style="flex: 1; background: #FFFFFF;"></div>
-                    <div style="flex: 1; background: #F5FEFF;"></div>
-                    <div style="flex: 1; background: #28324C;"></div>
-                    <div style="flex: 1; background: #7EAA9E;"></div>
-                </div>
-                <div class="project-info">
-                    <h3>Brand Identity Mood Board</h3>
-                    <p>Color system and typography for a data-driven brand.</p>
-                </div>
-            </button>
-
-            <!-- Project 3: Dashboard -->
-            <button class="project-card reveal" onclick="openModal('modal-dashboard')">
-                <div class="project-img" style="background: linear-gradient(135deg, #7EAA9E, #28324C); display: flex; justify-content: center; align-items: center;">
-                    <div style="color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: bold; opacity: 0.8; font-size: 2rem;">📊</div>
-                </div>
-                <div class="project-info">
-                    <h3>Urban Analytics Dashboard</h3>
-                    <p>Interactive data visualization for city transit.</p>
-                </div>
-            </button>
-
+        <!-- 1. Print Media Section (Blank Placeholder) -->
+        <div class="work-category reveal">
+            <h3 class="category-title">Print Media</h3>
+            <div class="portfolio-grid">
+                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_PRINT_IMAGE.jpg&quot; in the code.')">
+                    <div class="project-img">
+                        <!-- ADD YOUR PRINT MEDIA IMAGE HERE LATER -->
+                        <img src="YOUR_PRINT_IMAGE.jpg" alt="Print Media Proposal" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-icon" style="display: none;">+</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Print Media Proposal</h3>
+                        <p>Add your print media design here.</p>
+                    </div>
+                </button>
+            </div>
         </div>
+
+        <!-- 2. Techweek Section (New Section with the Folder) -->
+        <div class="work-category reveal">
+            <h3 class="category-title">Techweek</h3>
+            <div class="portfolio-grid">
+                <!-- Tech Week Folder -->
+                <button class="folder-card" onclick="openModal('modal-techweek')">
+                    <div class="folder-icon">📁</div>
+                    <h3>TECH WEEK 2026 Assets</h3>
+                    <p>4 Assets · Posters & Print Media</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. Brand Design Section -->
+        <div class="work-category reveal">
+            <h3 class="category-title">Brand Design</h3>
+            <div class="portfolio-grid">
+                
+                <!-- Mood Board -->
+                <button class="project-card" onclick="openModal('modal-moodboard')">
+                    <div class="project-img" style="display: flex;">
+                        <div style="flex: 1; background: #453939;"></div>
+                        <div style="flex: 1; background: #FFFFFF;"></div>
+                        <div style="flex: 1; background: #F5FEFF;"></div>
+                        <div style="flex: 1; background: #28324C;"></div>
+                        <div style="flex: 1; background: #7EAA9E;"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Brand Identity Mood Board</h3>
+                        <p>Color system and typography for a data-driven brand.</p>
+                    </div>
+                </button>
+
+                <!-- Blank Brand Design Placeholder -->
+                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_BRAND_IMAGE.jpg&quot; in the code.')">
+                    <div class="project-img">
+                        <img src="YOUR_BRAND_IMAGE.jpg" alt="Brand Design" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-icon" style="display: none;">+</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Brand Design Project</h3>
+                        <p>Add your brand design photo here.</p>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- 4. Typography Poster Section -->
+        <div class="work-category reveal">
+            <h3 class="category-title">Typography Poster</h3>
+            <div class="portfolio-grid">
+                
+                <!-- Blank Typography Placeholder -->
+                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_TYPOGRAPHY_IMAGE.jpg&quot; in the code.')">
+                    <div class="project-img">
+                        <img src="YOUR_TYPOGRAPHY_IMAGE.jpg" alt="Typography Poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-icon" style="display: none;">+</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Typography Poster</h3>
+                        <p>Add your typography poster photo here.</p>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- 5. Magazine Section -->
+        <div class="work-category reveal">
+            <h3 class="category-title">Magazine</h3>
+            <div class="portfolio-grid">
+                
+                <!-- Blank Magazine Placeholder -->
+                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_MAGAZINE_IMAGE.jpg&quot; in the code.')">
+                    <div class="project-img">
+                        <img src="YOUR_MAGAZINE_IMAGE.jpg" alt="Magazine Layout" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-icon" style="display: none;">+</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Magazine Layout</h3>
+                        <p>Add your magazine photo here.</p>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
     </section>
 
     <!-- CONTACT SECTION -->
@@ -637,12 +747,12 @@
 
     <!-- MODALS -->
     
-    <!-- Tech Week Folder Modal (Contains the 4 photos) -->
+    <!-- Tech Week Folder Modal (Now in the Techweek section) -->
     <div class="modal-overlay" id="modal-techweek">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('modal-techweek')">✕</button>
             <div class="modal-body">
-                <h2>Print Media Proposal</h2>
+                <h2>TECH WEEK 2026</h2>
                 <p>Official event posters and print media assets for TECH WEEK 2026. Click any image to view it full screen.</p>
                 
                 <div class="folder-grid">
@@ -659,9 +769,6 @@
                         <img src="poster4.jpg" alt="Tech Week Poster 4">
                     </div>
                 </div>
-
-                <h3 style="color: var(--c-white); margin-top: 30px; margin-bottom: 10px; font-size: 1.1rem;">Tools Used</h3>
-                <p>Figma, Photoshop, Illustrator</p>
             </div>
         </div>
     </div>
@@ -688,23 +795,7 @@
         </div>
     </div>
 
-    <!-- Dashboard Modal -->
-    <div class="modal-overlay" id="modal-dashboard">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('modal-dashboard')">✕</button>
-            <div class="modal-body">
-                <h2>Urban Analytics Dashboard</h2>
-                <p>A comprehensive dashboard tracking city transit data, commuter patterns, and environmental impact. Built with a focus on clean typography and intuitive navigation.</p>
-                <div style="height: 200px; background: linear-gradient(45deg, #28324C, #7EAA9E); border-radius: 10px; display: flex; justify-content: center; align-items: center; color: white; font-family: 'Space Grotesk', sans-serif; margin-bottom: 20px;">
-                    [Interactive Dashboard Mockup]
-                </div>
-                <h3 style="color: var(--c-white); margin-bottom: 10px; font-size: 1.1rem;">Tools Used</h3>
-                <p>Tableau, SQL, Python</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fullscreen Image Viewer (Pops up when clicking a photo) -->
+    <!-- Fullscreen Image Viewer -->
     <div class="image-viewer" id="image-viewer" onclick="closeImageViewer()">
         <span class="image-viewer-close">✕</span>
         <img id="viewer-img" src="" alt="Full size image">
@@ -727,7 +818,7 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // Modal Logic (For Project Folders)
+        // Modal Logic
         function openModal(id) {
             document.getElementById(id).classList.add('active');
             document.body.style.overflow = 'hidden'; 
@@ -738,7 +829,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Image Viewer Logic (For Full Screen Photos)
+        // Image Viewer Logic
         function openImageViewer(src) {
             document.getElementById('viewer-img').src = src;
             document.getElementById('image-viewer').classList.add('active');
@@ -746,13 +837,12 @@
 
         function closeImageViewer() {
             document.getElementById('image-viewer').classList.remove('active');
-            // Clear the image source after the animation finishes
             setTimeout(() => {
                 document.getElementById('viewer-img').src = '';
             }, 300);
         }
 
-        // Close Modals when clicking outside content
+        // Close Modals when clicking outside
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
