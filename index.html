@@ -699,18 +699,24 @@
     <section class="section" id="portfolio">
         <h2 class="section-title reveal">Selected Work</h2>
 
-        <!-- 1. Print Media Section -->
+        <!-- 1. Print Media Section (UPDATED TO FOLDER) -->
         <div class="work-category reveal">
             <h3 class="category-title">Print Media</h3>
             <div class="portfolio-grid">
-                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_PRINT_IMAGE.jpg&quot; in the code.')">
-                    <div class="project-img">
-                        <img src="YOUR_PRINT_IMAGE.jpg" alt="Print Media Proposal" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-icon" style="display: none;">+</div>
+                <button class="interactive-folder" style="--tab-text: 'PRINT_MEDIA/'" onclick="openModal('modal-printmedia')">
+                    <div class="folder-preview-grid">
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="print1.jpg" alt="Print Media 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">print1</div>
+                        </div>
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="print2.jpg" alt="Print Media 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">print2</div>
+                        </div>
                     </div>
-                    <div class="project-info">
-                        <h3>Print Media Proposal</h3>
-                        <p>Add your print media design here.</p>
+                    <div class="folder-info">
+                        <h3>Print Media Proposals</h3>
+                        <p>Click to open folder (2 files)</p>
                     </div>
                 </button>
             </div>
@@ -778,15 +784,13 @@
             </div>
         </div>
 
-        <!-- 4. Typography Poster Section (UPDATED) -->
+        <!-- 4. Typography Poster Section -->
         <div class="work-category reveal">
             <h3 class="category-title">Typography Poster</h3>
             <div class="portfolio-grid">
                 <button class="project-card" onclick="openImageViewer('typography.jpg')">
                     <div class="project-img">
-                        <!-- Added typography.jpg here -->
                         <img src="typography.jpg" alt="Cafe Alea Typography Poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <!-- Fallback box if missing -->
                         <div class="img-fallback" style="display: none;">typography.jpg missing. Upload to GitHub!</div>
                     </div>
                     <div class="project-info">
@@ -844,6 +848,28 @@
 
     <!-- MODALS -->
     
+    <!-- Print Media Modal (NEW) -->
+    <div class="modal-overlay" id="modal-printmedia">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal-printmedia')">✕</button>
+            <div class="modal-body">
+                <h2>PRINT MEDIA PROPOSALS</h2>
+                <p>Advertising and promotional print media designs. Click any image to view it full screen.</p>
+                
+                <div class="folder-grid">
+                    <div class="folder-item" onclick="openImageViewer('print1.jpg')">
+                        <img src="print1.jpg" alt="Print Media 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-fallback" style="display: none;">print1.jpg missing</div>
+                    </div>
+                    <div class="folder-item" onclick="openImageViewer('print2.jpg')">
+                        <img src="print2.jpg" alt="Print Media 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="img-fallback" style="display: none;">print2.jpg missing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Tech Week Folder Modal -->
     <div class="modal-overlay" id="modal-techweek">
         <div class="modal-content">
