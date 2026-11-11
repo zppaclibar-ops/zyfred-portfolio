@@ -333,7 +333,6 @@
         }
 
         .interactive-folder::before {
-            /* Uses the inline CSS variable --tab-text */
             content: var(--tab-text, 'FOLDER/');
             position: absolute;
             top: -32px;
@@ -374,7 +373,6 @@
             position: relative;
         }
 
-        /* For the 3-page magazine */
         .folder-preview-grid.three {
             grid-template-columns: 1fr 1fr 1fr;
         }
@@ -571,7 +569,6 @@
             align-items: center;
         }
 
-        /* Specific override for the magazine vertical stack */
         .folder-grid.vertical {
             grid-template-columns: 1fr;
         }
@@ -781,24 +778,26 @@
             </div>
         </div>
 
-        <!-- 4. Typography Poster Section -->
+        <!-- 4. Typography Poster Section (UPDATED) -->
         <div class="work-category reveal">
             <h3 class="category-title">Typography Poster</h3>
             <div class="portfolio-grid">
-                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_TYPOGRAPHY_IMAGE.jpg&quot; in the code.')">
+                <button class="project-card" onclick="openImageViewer('typography.jpg')">
                     <div class="project-img">
-                        <img src="YOUR_TYPOGRAPHY_IMAGE.jpg" alt="Typography Poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-icon" style="display: none;">+</div>
+                        <!-- Added typography.jpg here -->
+                        <img src="typography.jpg" alt="Cafe Alea Typography Poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <!-- Fallback box if missing -->
+                        <div class="img-fallback" style="display: none;">typography.jpg missing. Upload to GitHub!</div>
                     </div>
                     <div class="project-info">
-                        <h3>Typography Poster</h3>
-                        <p>Add your typography poster photo here.</p>
+                        <h3>Cafe Alea Typography</h3>
+                        <p>Brand identity and typographic layout for a small-batch coffee shop.</p>
                     </div>
                 </button>
             </div>
         </div>
 
-        <!-- 5. Magazine Section (NEW INTERACTIVE FOLDER) -->
+        <!-- 5. Magazine Section -->
         <div class="work-category reveal">
             <h3 class="category-title">Magazine</h3>
             <div class="portfolio-grid">
@@ -883,7 +882,6 @@
                 <h2>MAGAZINE ME</h2>
                 <p>The "FEARLESS" edition. A personal look into my interests, goals, and lifestyle. Click any page to view it full screen.</p>
                 
-                <!-- Using the vertical override class here -->
                 <div class="folder-grid vertical">
                     <div class="folder-item" onclick="openImageViewer('magazine1.jpg')">
                         <img src="magazine1.jpg" alt="Magazine Page 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
