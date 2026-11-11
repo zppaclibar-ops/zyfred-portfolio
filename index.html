@@ -49,6 +49,36 @@
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            /* Keep default cursor */
+            cursor: auto;
+        }
+
+        /* === CUSTOM MOUSE EFFECTS === */
+        #mouse-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none; /* Never block interactions */
+        }
+
+        #cursor-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            /* Soft white glow with faint green/cyan tint */
+            background: radial-gradient(circle, rgba(200, 255, 240, 0.12) 0%, rgba(0, 255, 204, 0.05) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            will-change: transform;
         }
 
         /* === BACKGROUND CANVAS === */
@@ -422,8 +452,8 @@
         .gallery-item img {
             width: 100%;
             height: auto;
-            max-height: 75vh; /* Prevents extremely tall images from dominating */
-            object-fit: contain; /* Ensures the ENTIRE image is visible, no cropping */
+            max-height: 75vh; 
+            object-fit: contain; 
             border-radius: 4px;
             display: block;
             background: rgba(0,0,0,0.3);
@@ -568,6 +598,10 @@
     </style>
 </head>
 <body>
+
+    <!-- CUSTOM MOUSE EFFECTS OVERLAYS -->
+    <div id="cursor-glow"></div>
+    <canvas id="mouse-canvas"></canvas>
 
     <!-- MATRIX RAIN BACKGROUND -->
     <canvas id="matrix-canvas"></canvas>
@@ -767,95 +801,218 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // === MATRIX FALLING NUMBERS BACKGROUND ===
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-        let columns = Math.floor(width / 20); 
-        let yPositions = Array(columns).fill(0);
-        
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        
-        function resizeCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            columns = Math.floor(width / 20);
-            yPositions = Array(columns).fill(0);
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(5, 5, 8, 0.08)';
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.font = '14px monospace';
+        // === 1. CUSTOM MOUSE EFFECTS (GLOW + DIGITAL TRAIL) ===
+        (function initMouseEffects() {
+            const isTouch = window.matchMedia('(pointer: coarse)').matches;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             
-            for (let i = 0; i < yPositions.length; i++) {
-                const text = Math.random() > 0.9 ? Math.floor(Math.random() * 10) : (Math.random() > 0.5 ? '1' : '0');
-                
-                const isCyan = Math.random() > 0.98;
-                ctx.fillStyle = isCyan ? 'rgba(0, 255, 204, 0.8)' : 'rgba(126, 170, 158, 0.4)';
-                
-                const x = i * 20;
-                const y = yPositions[i];
-                
-                ctx.fillText(text, x, y);
+            // Disable on touch devices or if user prefers reduced motion
+            if (isTouch || prefersReducedMotion) return;
 
-                if (y > height && Math.random() > 0.975) {
-                    yPositions[i] = 0;
-                } else {
-                    yPositions[i] += 15;
+            const glowEl = document.getElementById('cursor-glow');
+            const canvas = document.getElementById('mouse-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let mouseX = width / 2;
+            let mouseY = height / 2;
+            let glowX = mouseX;
+            let glowY = mouseY;
+            
+            let particles = [];
+            let lastSpawn = 0;
+            let isMouseActive = false;
+
+            // Resize Canvas
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Mouse Move Event
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                if (!isMouseActive) {
+                    isMouseActive = true;
+                    glowEl.style.opacity = 1;
                 }
-            }
-        }
 
-        let animationId;
-        let isTabActive = true;
-
-        function loop() {
-            if (isTabActive) {
-                drawMatrix();
-            }
-            animationId = requestAnimationFrame(loop);
-        }
-
-        if (!prefersReducedMotion) {
-            loop();
-        } else {
-            ctx.fillStyle = '#050508';
-            ctx.fillRect(0, 0, width, height);
-        }
-
-        document.addEventListener('visibilitychange', () => {
-            isTabActive = !document.hidden;
-        });
-
-
-        // === SCROLL REVEAL ANIMATION ===
-        const revealElements = document.querySelectorAll('.reveal');
-        
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+                // Throttle particle spawning (every ~50ms)
+                const now = Date.now();
+                if (now - lastSpawn > 50) {
+                    lastSpawn = now;
+                    spawnParticles(mouseX, mouseY);
                 }
             });
-        }, {
-            root: null,
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        });
 
-        revealElements.forEach(el => revealObserver.observe(el));
+            // Mouse Leave Event (Hide effects)
+            document.addEventListener('mouseleave', () => {
+                isMouseActive = false;
+                glowEl.style.opacity = 0;
+            });
+
+            // Spawn Particles (Numbers)
+            function spawnParticles(x, y) {
+                // Limit max particles to avoid lag
+                if (particles.length > 50) return;
+                
+                const chars = ['0', '1', '0', '1', '0', '1', '01', '10', '101', '010'];
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Random offset to scatter them around cursor
+                const offsetX = (Math.random() - 0.5) * 60;
+                const offsetY = (Math.random() - 0.5) * 60;
+
+                particles.push({
+                    x: x + offsetX,
+                    y: y + offsetY,
+                    vx: (Math.random() - 0.5) * 0.8, // Slight horizontal drift
+                    vy: Math.random() * 1.5 + 0.5,   // Float downward slightly
+                    text: text,
+                    opacity: Math.random() * 0.15 + 0.1, // Start between 10% and 25%
+                    fadeSpeed: Math.random() * 0.005 + 0.003,
+                    size: Math.random() * 6 + 10
+                });
+            }
+
+            // Animation Loop
+            function animate() {
+                // 1. Smooth Glow Easing
+                glowX += (mouseX - glowX) * 0.15;
+                glowY += (mouseY - glowY) * 0.15;
+                glowEl.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
+
+                // 2. Particle Trail Logic
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    
+                    // Move particle
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    // Fade out
+                    p.opacity -= p.fadeSpeed;
+
+                    // Remove if fully transparent
+                    if (p.opacity <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    // Draw particle
+                    ctx.fillStyle = `rgba(180, 220, 210, ${p.opacity})`; 
+                    ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
+                    ctx.fillText(p.text, p.x, p.y);
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            // Start Loop
+            animate();
+        })();
 
 
-        // === COPY TO CLIPBOARD ===
+        // === 2. MATRIX FALLING NUMBERS BACKGROUND ===
+        (function initMatrix() {
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let columns = Math.floor(width / 20); 
+            let yPositions = Array(columns).fill(0);
+
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                columns = Math.floor(width / 20);
+                yPositions = Array(columns).fill(0);
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(5, 5, 8, 0.08)';
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.font = '14px monospace';
+                
+                for (let i = 0; i < yPositions.length; i++) {
+                    const text = Math.random() > 0.9 ? Math.floor(Math.random() * 10) : (Math.random() > 0.5 ? '1' : '0');
+                    const isCyan = Math.random() > 0.98;
+                    ctx.fillStyle = isCyan ? 'rgba(0, 255, 204, 0.8)' : 'rgba(126, 170, 158, 0.4)';
+                    
+                    const x = i * 20;
+                    const y = yPositions[i];
+                    
+                    ctx.fillText(text, x, y);
+
+                    if (y > height && Math.random() > 0.975) {
+                        yPositions[i] = 0;
+                    } else {
+                        yPositions[i] += 15;
+                    }
+                }
+            }
+
+            let animationId;
+            let isTabActive = true;
+
+            function loop() {
+                if (isTabActive) {
+                    drawMatrix();
+                }
+                animationId = requestAnimationFrame(loop);
+            }
+
+            if (!prefersReducedMotion) {
+                loop();
+            } else {
+                ctx.fillStyle = '#050508';
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                isTabActive = !document.hidden;
+            });
+        })();
+
+
+        // === 3. SCROLL REVEAL ANIMATION ===
+        (function initScrollReveal() {
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        })();
+
+
+        // === 4. COPY TO CLIPBOARD ===
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Copied: ' + text);
