@@ -584,6 +584,16 @@
             object-fit: contain;
         }
 
+        /* Image description text */
+        .img-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            text-align: center;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 0 5px;
+        }
+
         /* Image Viewer */
         .image-viewer {
             position: fixed;
@@ -699,7 +709,7 @@
     <section class="section" id="portfolio">
         <h2 class="section-title reveal">Selected Work</h2>
 
-        <!-- 1. Print Media Section (UPDATED TO FOLDER) -->
+        <!-- 1. Print Media Section -->
         <div class="work-category reveal">
             <h3 class="category-title">Print Media</h3>
             <div class="portfolio-grid">
@@ -771,14 +781,33 @@
                     </div>
                 </button>
 
-                <button class="project-card" onclick="alert('Image coming soon! To add it, replace src=&quot;YOUR_BRAND_IMAGE.jpg&quot; in the code.')">
-                    <div class="project-img">
-                        <img src="YOUR_BRAND_IMAGE.jpg" alt="Brand Design" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-icon" style="display: none;">+</div>
+                <!-- NALYZY Interactive Folder -->
+                <button class="interactive-folder" style="--tab-text: 'NALYZY_BRANDING/'" onclick="openModal('modal-nalyzy')">
+                    <div class="folder-preview-grid three" style="grid-template-columns: repeat(3, 1fr);">
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="nalyzy1.jpg" alt="NALYZY 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy1</div>
+                        </div>
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="nalyzy2.jpg" alt="NALYZY 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy2</div>
+                        </div>
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="nalyzy3.jpg" alt="NALYZY 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy3</div>
+                        </div>
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="nalyzy4.jpg" alt="NALYZY 4" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy4</div>
+                        </div>
+                        <div style="position: relative; overflow: hidden; border-radius: 4px;">
+                            <img src="nalyzy5.jpg" alt="NALYZY 5" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy5</div>
+                        </div>
                     </div>
-                    <div class="project-info">
-                        <h3>Brand Design Project</h3>
-                        <p>Add your brand design photo here.</p>
+                    <div class="folder-info">
+                        <h3>NALYZY Identity</h3>
+                        <p>Click to open folder (5 files)</p>
                     </div>
                 </button>
             </div>
@@ -805,8 +834,6 @@
         <div class="work-category reveal">
             <h3 class="category-title">Magazine</h3>
             <div class="portfolio-grid">
-                
-                <!-- Interactive Magazine Folder -->
                 <button class="interactive-folder" style="--tab-text: 'MAGAZINE_ME/'" onclick="openModal('modal-magazine')">
                     <div class="folder-preview-grid three">
                         <div style="position: relative; overflow: hidden; border-radius: 4px;">
@@ -827,7 +854,6 @@
                         <p>Click to open folder (3 pages)</p>
                     </div>
                 </button>
-
             </div>
         </div>
 
@@ -848,7 +874,7 @@
 
     <!-- MODALS -->
     
-    <!-- Print Media Modal (NEW) -->
+    <!-- Print Media Modal -->
     <div class="modal-overlay" id="modal-printmedia">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('modal-printmedia')">✕</button>
@@ -894,6 +920,64 @@
                     <div class="folder-item" onclick="openImageViewer('techweek4.jpg.png')">
                         <img src="techweek4.jpg.png" alt="Tech Week Poster 4" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="img-fallback" style="display: none;">techweek4.jpg.png missing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NALYZY Branding Modal -->
+    <div class="modal-overlay" id="modal-nalyzy">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal-nalyzy')">✕</button>
+            <div class="modal-body">
+                <h2>NALYZY BRANDING</h2>
+                <p>A complete visual identity system built around data and clarity. Click any image to view it full screen.</p>
+                
+                <div class="folder-grid">
+                    <!-- Logo 1 -->
+                    <div>
+                        <div class="folder-item" onclick="openImageViewer('nalyzy1.jpg')">
+                            <img src="nalyzy1.jpg" alt="NALYZY Brand Board" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy1.jpg missing</div>
+                        </div>
+                        <p class="img-desc"><strong>Brand Board:</strong> The foundational visual identity, showcasing the primary logo, color palette, and typography choices (The Seasons & Archivo Black).</p>
+                    </div>
+                    
+                    <!-- Logo 2 -->
+                    <div>
+                        <div class="folder-item" onclick="openImageViewer('nalyzy2.jpg')">
+                            <img src="nalyzy2.jpg" alt="NALYZY Badge Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy2.jpg missing</div>
+                        </div>
+                        <p class="img-desc"><strong>Badge Logo:</strong> A compact, horizontal lockup designed for digital avatars, social media profiles, and app icons.</p>
+                    </div>
+                    
+                    <!-- Logo 3 -->
+                    <div>
+                        <div class="folder-item" onclick="openImageViewer('nalyzy3.jpg')">
+                            <img src="nalyzy3.jpg" alt="NALYZY Vertical Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy3.jpg missing</div>
+                        </div>
+                        <p class="img-desc"><strong>Vertical Layout:</strong> A minimalist, right-aligned variation perfect for narrow spaces like vertical banners or mobile screens.</p>
+                    </div>
+
+                    <!-- Logo 4 -->
+                    <div>
+                        <div class="folder-item" onclick="openImageViewer('nalyzy4.jpg')">
+                            <img src="nalyzy4.jpg" alt="NALYZY Horizontal Tagline" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy4.jpg missing</div>
+                        </div>
+                        <p class="img-desc"><strong>Horizontal with Tagline:</strong> The primary logo accompanied by the brand's core message, "Data in. Clarity out."</p>
+                    </div>
+
+                    <!-- Logo 5 -->
+                    <div>
+                        <div class="folder-item" onclick="openImageViewer('nalyzy5.jpg')">
+                            <img src="nalyzy5.jpg" alt="NALYZY Chart Mockup" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="img-fallback" style="display: none;">nalyzy5.jpg missing</div>
+                        </div>
+                        <p class="img-desc"><strong>Graphic Mockup:</strong> The logo in action, overlaid on a data visualization to demonstrate its application in analytical contexts.</p>
                     </div>
                 </div>
             </div>
